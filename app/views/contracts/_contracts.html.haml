@@ -1,0 +1,5 @@
+.task
+  =fields_for "film[contract_attributes][]", contract do |contract_form|
+  Contract: 
+  =contract_form.text_field :name
+  =link_to_function "remove", "$(this).up('.task').remove()"

@@ -1,0 +1,4 @@
+%h1=@country.name
+-@country.films.each do |f|
+  =link_to f.name, f 
+  ="(#{f.year})"

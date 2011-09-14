@@ -1,0 +1,67 @@
+=form_for @film,:html=>{:multipart=>true} do |f|
+  -if @film.errors.any?
+    .div.error
+      %h2 При сохранении произошли ошибки
+      %ul
+        -@film.errors.full_messages.each do |msg|
+          %li=msg
+  .field
+    =f.label :name
+    %br
+    =f.text_field :name
+  .field
+    =f.label :origin_name
+    %br
+    =f.text_field :origin_name
+  .field
+    =f.label :slogan
+    %br
+    =f.text_area :slogan
+  .field
+    =f.label :year
+    %br
+    =f.text_field :year,:size=>4
+  .field
+    =f.label :length
+    %br
+    =f.text_field :length,:size=>3
+  .field
+    =f.label :person_tokens, "В главных ролях"
+    %br
+    =f.text_field :person_tokens,"data-pre"=>@film.people.map(&:attributes).to_json
+  .field
+    =f.label :genre_tokens, "Жанры"
+    %br
+    =f.text_field :genre_tokens,"data-pre"=>@film.genres.map(&:attributes).to_json
+  .field
+    =f.label :country_tokens, "Страны"
+    %br
+    =f.text_field :country_tokens,"data-pre"=>@film.countries.map(&:attributes).to_json
+  .field
+    =f.label :cover
+    %br
+    =f.file_field :cover
+  .field
+    =f.label :trailer_url, "Код видео на YouTube.com"
+    %br
+    =f.text_field :trailer_url
+  - @contr = @film.contracts.build
+  = form_for([@film, @film.contracts.build]) do |c|
+    -if @contract != nil
+      -if @contract.errors.any?
+        .msg.error
+          %h2 При сохранении произошла ошибка
+          %ul
+            -@contract.errors.full_messages.each do |msg|
+              %li=msg
+    .field
+      = c.label :post_id, "Должность"
+      %br
+      = c.select :post_id, Post.all.map{|p| [p.name, p.id]}
+    .field
+      = c.label :person_id, "Персона"
+      %br
+      = c.select :person_id, Person.all.map{|pe| [pe.name, pe.id]}
+    .actions
+      = f.submit
+
